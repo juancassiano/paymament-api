@@ -74,7 +74,6 @@ public class PessoaService {
 
 
 
-
     private boolean existeCartao(String numeroCartao) {
         return pessoaFisicaRepository.existsByCartaoNumero(numeroCartao) ||
                 pessoaJuridicaRepository.existsByCartaoNumero(numeroCartao);

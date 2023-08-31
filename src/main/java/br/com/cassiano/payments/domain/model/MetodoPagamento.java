@@ -1,8 +1,14 @@
 package br.com.cassiano.payments.domain.model;
 
 public enum MetodoPagamento {
-    BOLETO,
-    PIX,
-    CREDITO,
-    DEBITO
+    BOLETO("Boleto"),
+    PIX("Pix"),
+    CREDITO("Credito"),
+    DEBITO("Debito");
+
+    private String descricao;
+
+    MetodoPagamento(String descricao){
+        this.descricao = descricao;
+    }
 }

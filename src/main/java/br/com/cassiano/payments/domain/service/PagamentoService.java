@@ -23,12 +23,21 @@ public class PagamentoService {
     }
 
 
-    public Pagamento criar(Pagamento pagamento){
-        return pagamentoRepository.save(pagamento);
+    public Pagamento criar(Pagamento pagamento, String documentoPessoa){
+        Pessoa pessoa = pessoaService.buscarPorCpfOuCnpj(documentoPessoa);
+        Pagamento novoPagamento = new Pagamento();
+        if(pessoa.getId() != null) {
+            novoPagamento.setStatusPagamento(pagamento.getStatusPagamento());
+            novoPagamento.setValor(pagamento.getValor());
+            novoPagamento.setPessoa(pessoa);
+            novoPagamento.setMetodoPagamento(pagamento.getMetodoPagamento());
+        }
+        return pagamentoRepository.save(novoPagamento);
+
     }
 
-    public void atualizarStatusPagamento(Long pagamentoId, StatusPagamento novoStatus) {
-        Pagamento pagamento = pagamentoRepository.findById(pagamentoId)
+    public Pagamento atualizarStatusPagamento(Long pagamentoId, StatusPagamento novoStatus) {
+                Pagamento pagamento = pagamentoRepository.findById(pagamentoId)
                 .orElseThrow(() -> new PagamentoNaoEncontradoException(pagamentoId));
 
         if (pagamento.getStatusPagamento() == StatusPagamento.PENDENTE) {
@@ -39,9 +48,11 @@ public class PagamentoService {
         } else if (pagamento.getStatusPagamento() == StatusPagamento.FALHA && novoStatus == StatusPagamento.PENDENTE) {
             pagamento.setStatusPagamento(novoStatus);
             pagamentoRepository.save(pagamento);
+
         }else{
             throw new RegraDeNegocioException("Não foi possível alterar o status do seu pagamento");
         }
+        return pagamento;
     }
     public List<Pagamento> listarTodos(){
         return pagamentoRepository.findAll();
