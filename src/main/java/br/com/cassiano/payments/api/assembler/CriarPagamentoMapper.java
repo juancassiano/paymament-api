@@ -1,17 +1,17 @@
 package br.com.cassiano.payments.api.assembler;
 
-import br.com.cassiano.payments.api.model.request.PessoaFisicaRequestDTO;
-import br.com.cassiano.payments.api.model.response.PessoaJuridicaDTO;
-import br.com.cassiano.payments.domain.model.PessoaFisica;
+import br.com.cassiano.payments.api.model.request.PagamentoRequestDTO;
+import br.com.cassiano.payments.api.model.response.PagamentoResponseDTO;
+import br.com.cassiano.payments.domain.model.Pagamento;
 
 
 public class CriarPagamentoMapper {
 
-    public PessoaJuridicaDTO toResponseDTO(PessoaFisica pessoaFisica) {
-        return new PessoaJuridicaDTO(pessoaFisica.getId(), pessoaFisica.getDocumento(), pessoaFisica.getCartao(), pessoaFisica.getNome());
+    public PagamentoResponseDTO toResponseDTO(Pagamento pagamento) {
+        return new PagamentoResponseDTO(pagamento.getId(), pagamento.getValor(),pagamento.getStatusPagamento(),pagamento.getMetodoPagamento(), pagamento.getPessoa());
     }
 
-    public PessoaFisica toPessoaFisicaEntity(PessoaFisicaRequestDTO requestDTO) {
-        return new PessoaFisica(requestDTO.documento(), requestDTO.cartao(), requestDTO.nome());
+    public Pagamento toPagamentoEntity(PagamentoRequestDTO requestDTO) {
+        return new Pagamento(requestDTO.statusPagamento(), requestDTO.metodoPagamento(), requestDTO.pessoa(), requestDTO.valor());
     }
 }
