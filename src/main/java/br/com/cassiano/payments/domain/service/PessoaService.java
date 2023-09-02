@@ -31,6 +31,8 @@ public class PessoaService {
     }
 
     public PessoaJuridica criarPessoaJuridica(PessoaJuridica pessoaJuridica) {
+        Optional<PessoaJuridica> pessoa = pessoaJuridicaRepository.findByDocumento(pessoaJuridica.getDocumento());
+
         if (existeCartao(pessoaJuridica.getCartao().getNumero())) {
             throw new CartaoExistenteException("O cartão já está cadastrado");
         }
