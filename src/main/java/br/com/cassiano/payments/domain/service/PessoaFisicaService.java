@@ -1,6 +1,6 @@
 package br.com.cassiano.payments.domain.service;
 
-import br.com.cassiano.payments.domain.exceptions.PessoaFisicaNaoEncontradaException;
+import br.com.cassiano.payments.domain.exceptions.PessoaNaoEncontradaException;
 import br.com.cassiano.payments.domain.model.PessoaFisica;
 import br.com.cassiano.payments.domain.repository.PessoaFisicaRepository;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class PessoaFisicaService {
 
     public PessoaFisica buscarPorCpf(String cpf){
         return pessoaFisicaRepository.findByDocumento(cpf).orElseThrow(
-                () -> new PessoaFisicaNaoEncontradaException(cpf)
+                () -> new PessoaNaoEncontradaException(cpf)
         );
     }
 
@@ -26,7 +26,7 @@ public class PessoaFisicaService {
 
     public PessoaFisica buscarPessoaFisica(Long id){
         return pessoaFisicaRepository.findById(id).orElseThrow(
-                () -> new PessoaFisicaNaoEncontradaException(id)
+                () -> new PessoaNaoEncontradaException(id)
         );
     }
 }

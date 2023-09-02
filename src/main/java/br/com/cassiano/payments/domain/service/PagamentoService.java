@@ -1,6 +1,7 @@
 package br.com.cassiano.payments.domain.service;
 
 import br.com.cassiano.payments.domain.exceptions.PagamentoNaoEncontradoException;
+import br.com.cassiano.payments.domain.exceptions.PessoaNaoEncontradaException;
 import br.com.cassiano.payments.domain.exceptions.RegraDeNegocioException;
 import br.com.cassiano.payments.domain.model.Pagamento;
 import br.com.cassiano.payments.domain.model.Pessoa;
@@ -26,12 +27,14 @@ public class PagamentoService {
     public Pagamento criar(Pagamento pagamento, String documentoPessoa){
         Pessoa pessoa = pessoaService.buscarPorCpfOuCnpj(documentoPessoa);
         Pagamento novoPagamento = new Pagamento();
-        if(pessoa.getId() != null) {
-            novoPagamento.setStatusPagamento(pagamento.getStatusPagamento());
-            novoPagamento.setValor(pagamento.getValor());
-            novoPagamento.setPessoa(pessoa);
-            novoPagamento.setMetodoPagamento(pagamento.getMetodoPagamento());
+        if(pessoa == null) {
+            throw new PessoaNaoEncontradaException(documentoPessoa);
+
         }
+        novoPagamento.setStatusPagamento(pagamento.getStatusPagamento());
+        novoPagamento.setValor(pagamento.getValor());
+        novoPagamento.setPessoa(pessoa);
+        novoPagamento.setMetodoPagamento(pagamento.getMetodoPagamento());
         return pagamentoRepository.save(novoPagamento);
 
     }

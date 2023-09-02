@@ -60,30 +60,15 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
     }
 
-    @ExceptionHandler(PessoaFisicaNaoEncontradaException.class)
-    private ResponseEntity<ProblemDetail> handlePessoaFisicaNaoEncontradaException(PessoaFisicaNaoEncontradaException exception){
+    @ExceptionHandler(PessoaNaoEncontradaException.class)
+    private ResponseEntity<ProblemDetail> handlePessoaFisicaNaoEncontradaException(PessoaNaoEncontradaException exception) {
         StringWriter sw = new StringWriter();
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
-                HttpStatus.NOT_FOUND,sw.toString()
+                HttpStatus.NOT_FOUND, sw.toString()
         );
-        problemDetail.setInstance(URI.create("/pessoa-fisica-nao-encontrada"));
+        problemDetail.setInstance(URI.create("/pessoa-nao-encontrada"));
         problemDetail.setTitle(exception.getMessage());
-        problemDetail.setProperty("descricao","Essa pessoa não foi encontrada");
-        problemDetail.setProperty("timestamp", Instant.now());
-        problemDetail.setType(path);
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
-    }
-
-    @ExceptionHandler(PessoaJuridicaNaoEncontradaException.class)
-    private ResponseEntity<ProblemDetail> handlePessoaJuridicaNaoEncontradaException(PessoaJuridicaNaoEncontradaException exception){
-        StringWriter sw = new StringWriter();
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
-                HttpStatus.NOT_FOUND,sw.toString()
-        );
-        problemDetail.setInstance(URI.create("/pessoa-juridica-nao-encontrada"));
-        problemDetail.setTitle(exception.getMessage());
-        problemDetail.setProperty("descricao","Essa pessoa não foi encontrada");
+        problemDetail.setProperty("descricao", "Essa pessoa não foi encontrada");
         problemDetail.setProperty("timestamp", Instant.now());
         problemDetail.setType(path);
 

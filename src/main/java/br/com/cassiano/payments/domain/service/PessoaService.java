@@ -39,7 +39,7 @@ public class PessoaService {
 
     public PessoaFisica adicionarCartaoPessoaFisica(Long pessoaId, Cartao cartao) {
         PessoaFisica pessoa = pessoaFisicaRepository.findById(pessoaId)
-                .orElseThrow(() -> new PessoaFisicaNaoEncontradaException(pessoaId));
+                .orElseThrow(() -> new PessoaNaoEncontradaException(pessoaId));
 
         existeCartao(pessoa, cartao);
 
@@ -49,7 +49,7 @@ public class PessoaService {
 
     public PessoaJuridica adicionarCartaoPessoaJuridica(Long pessoaId, Cartao cartao){
         PessoaJuridica pessoa = pessoaJuridicaRepository.findById(pessoaId)
-                .orElseThrow(() -> new PessoaJuridicaNaoEncontradaException(pessoaId));
+                .orElseThrow(() -> new PessoaNaoEncontradaException(pessoaId));
 
         existeCartao(pessoa, cartao);
 
@@ -60,12 +60,12 @@ public class PessoaService {
     public Pessoa buscarPorCpfOuCnpj(String documento){
         if(documento.length() == 14){
             return pessoaJuridicaRepository.findByDocumento(documento).orElseThrow(
-                    () -> new PessoaJuridicaNaoEncontradaException(documento)
+                    () -> new PessoaNaoEncontradaException(documento)
             );
         }
         else if(documento.length() == 11){
           return pessoaFisicaRepository.findByDocumento(documento).orElseThrow(
-                    () -> new PessoaJuridicaNaoEncontradaException(documento)
+                    () -> new PessoaNaoEncontradaException(documento)
             );
         }else{
             throw new DocumentoNaoEncontradaException(documento);
