@@ -29,4 +29,6 @@ public abstract class Pessoa {
         this.documento = documento;
         this.cartao = cartao;
     }
+
+
 }

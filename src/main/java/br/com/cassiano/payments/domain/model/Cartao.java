@@ -13,5 +13,4 @@ public class Cartao {
 
     private String numero;
 
-
 }

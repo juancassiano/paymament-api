@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.br.CPF;
 public record PessoaFisicaRequestDTO(
         @NotNull @CPF
         String documento,
+
         Cartao cartao,
         @NotNull
         String nome

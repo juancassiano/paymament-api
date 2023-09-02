@@ -1,8 +1,7 @@
 package br.com.cassiano.payments.domain.service;
 
-import br.com.cassiano.payments.domain.exceptions.PagamentoNaoEncontradoException;
-import br.com.cassiano.payments.domain.exceptions.PessoaNaoEncontradaException;
-import br.com.cassiano.payments.domain.exceptions.RegraDeNegocioException;
+import br.com.cassiano.payments.domain.exceptions.*;
+import br.com.cassiano.payments.domain.model.MetodoPagamento;
 import br.com.cassiano.payments.domain.model.Pagamento;
 import br.com.cassiano.payments.domain.model.Pessoa;
 import br.com.cassiano.payments.domain.model.StatusPagamento;
@@ -40,6 +39,7 @@ public class PagamentoService {
 
         if (pagamento.getStatusPagamento() == StatusPagamento.PENDENTE) {
             if (novoStatus == StatusPagamento.SUCESSO || novoStatus == StatusPagamento.FALHA) {
+                pagarComCartao(pagamento);
                 pagamento.setStatusPagamento(novoStatus);
                 pagamentoRepository.save(pagamento);
             }
@@ -84,5 +84,16 @@ public class PagamentoService {
         return pagamentoRepository.findById(pagamentoId).orElseThrow(
                 () -> new PagamentoNaoEncontradoException(pagamentoId)
         );
+    }
+
+    public void pagarComCartao(Pagamento pagamento){
+        if((pagamento.getMetodoPagamento() == MetodoPagamento.CREDITO) || (pagamento.getMetodoPagamento() == MetodoPagamento.DEBITO)){
+            if(pagamento.getPessoa().getCartao().getNumero() == null){
+                throw new CartaoNaoExistenteException();
+            }
+            pagamento.setStatusPagamento(StatusPagamento.SUCESSO);
+            pagamentoRepository.save(pagamento);
+        }
+
     }
 }
