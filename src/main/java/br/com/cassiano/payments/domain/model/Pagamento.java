@@ -31,5 +31,7 @@ public class Pagamento {
     private Pessoa pessoa;
 
     public Pagamento(MetodoPagamento metodoPagamento, BigDecimal valor) {
+        this.metodoPagamento = metodoPagamento;
+        this.valor = valor;
     }
 }
