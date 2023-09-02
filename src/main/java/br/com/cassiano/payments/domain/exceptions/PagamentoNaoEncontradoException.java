@@ -3,7 +3,7 @@ package br.com.cassiano.payments.domain.exceptions;
 import br.com.cassiano.payments.domain.model.StatusPagamento;
 import jakarta.persistence.EntityNotFoundException;
 
-public class PagamentoNaoEncontradoException  extends EntityNotFoundException {
+public class PagamentoNaoEncontradoException  extends RuntimeException {
 
 
     public PagamentoNaoEncontradoException(Long id){

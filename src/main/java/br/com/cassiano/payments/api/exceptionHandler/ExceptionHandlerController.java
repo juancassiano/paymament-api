@@ -1,19 +1,27 @@
 package br.com.cassiano.payments.api.exceptionHandler;
 
 import br.com.cassiano.payments.domain.exceptions.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.io.StringWriter;
 import java.net.URI;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestControllerAdvice
-public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
+public class ExceptionHandlerController  {
+
+    @Autowired
+    private MessageSource messageSource;
     URI path = URI.create("http://localhost:8080/errors");
     @ExceptionHandler(CartaoExistenteException.class)
     private ResponseEntity<ProblemDetail> handleCartaoExistenteException(CartaoExistenteException exception){
@@ -62,6 +70,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(PessoaNaoEncontradaException.class)
     private ResponseEntity<ProblemDetail> handlePessoaFisicaNaoEncontradaException(PessoaNaoEncontradaException exception) {
+
         StringWriter sw = new StringWriter();
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.NOT_FOUND, sw.toString()
@@ -105,5 +114,23 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(problemDetail);
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    private ResponseEntity<ProblemDetail> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        BindingResult bindingResult = ex.getBindingResult();
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+        List<String> errorMessages = new ArrayList<>();
 
+        for (FieldError fieldError : fieldErrors) {
+            String errorMessage = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+            errorMessages.add(errorMessage);
+        }
+        StringWriter sw = new StringWriter();
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+                sw.toString());
+        problemDetail.setTitle("Erro de validação");
+        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty("errors", errorMessages);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+    }
 }

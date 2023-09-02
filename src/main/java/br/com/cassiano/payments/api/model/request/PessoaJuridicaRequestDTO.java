@@ -6,10 +6,11 @@ import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 
 public record PessoaJuridicaRequestDTO(
-        @NotNull @CNPJ
+        @NotNull(message = "{documento.obrigaorio}")
+        @CNPJ(message = "{documento.invalido}")
         String documento,
         Cartao cartao,
-        @NotNull
+        @NotNull(message = "{razaoSocial.obrigatorio}")
         String razaoSocial
 ) {
 }

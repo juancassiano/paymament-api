@@ -5,11 +5,12 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.br.CPF;
 
 public record PessoaFisicaRequestDTO(
-        @NotNull @CPF
+        @NotNull(message = "{documento.obrigaorio}")
+        @CPF(message = "{documento.invalido}")
         String documento,
 
         Cartao cartao,
-        @NotNull
+        @NotNull(message = "{nome.obrigatorio}")
         String nome
 ) {
 }
