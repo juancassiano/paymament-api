@@ -1,10 +1,8 @@
 package br.com.cassiano.payments.api.model.response;
 
 import br.com.cassiano.payments.domain.model.Cartao;
-import jakarta.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.br.CPF;
 
-public record PessoaFisicaResponseDTO(
+public record PessoaJuridicaDTO(
         Long id,
         String documento,
         Cartao cartao,
