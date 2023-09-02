@@ -30,6 +30,6 @@ public class Pagamento {
     @JoinColumn(name = "pessoa_id")
     private Pessoa pessoa;
 
-    public Pagamento(MetodoPagamento metodoPagamento, Pessoa pessoa, BigDecimal valor) {
+    public Pagamento(MetodoPagamento metodoPagamento, BigDecimal valor) {
     }
 }

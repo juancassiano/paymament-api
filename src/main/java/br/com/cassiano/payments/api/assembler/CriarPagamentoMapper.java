@@ -11,6 +11,6 @@ public class CriarPagamentoMapper {
     }
 
     public Pagamento toPagamentoEntity(PagamentoRequestDTO requestDTO) {
-        return new Pagamento(requestDTO.metodoPagamento(), requestDTO.pessoa(), requestDTO.valor());
+        return new Pagamento(requestDTO.metodoPagamento(), requestDTO.valor());
     }
 }

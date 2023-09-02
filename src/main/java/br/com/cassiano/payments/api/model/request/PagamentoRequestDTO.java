@@ -15,9 +15,6 @@ public record PagamentoRequestDTO(
 
         BigDecimal valor,
         @NotNull
-        MetodoPagamento metodoPagamento,
-
-        @NotNull
-        Pessoa pessoa
+        MetodoPagamento metodoPagamento
 ) {
 }
