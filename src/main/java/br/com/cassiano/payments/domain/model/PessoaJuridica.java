@@ -17,4 +17,9 @@ public class PessoaJuridica extends Pessoa{
     @Column(nullable = false, unique = true)
     private String razaoSocial;
 
+    public PessoaJuridica(String documento, Cartao cartao, String razaoSocial){
+        super(documento, cartao);
+        this.razaoSocial = razaoSocial;
+    }
+
 }
