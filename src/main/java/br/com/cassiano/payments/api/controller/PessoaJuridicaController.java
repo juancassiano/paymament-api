@@ -1,5 +1,9 @@
 package br.com.cassiano.payments.api.controller;
 
+import br.com.cassiano.payments.api.assembler.CriarPessoaJuridicaMapper;
+import br.com.cassiano.payments.api.model.request.PessoaJuridicaRequestDTO;
+import br.com.cassiano.payments.api.model.response.PessoaJuridicaDTO;
+import br.com.cassiano.payments.domain.model.Pessoa;
 import br.com.cassiano.payments.domain.model.PessoaFisica;
 import br.com.cassiano.payments.domain.model.PessoaJuridica;
 import br.com.cassiano.payments.domain.service.PessoaFisicaService;
@@ -11,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController()
 @RequestMapping("/pessoas-juridica")
@@ -20,24 +25,31 @@ public class PessoaJuridicaController {
     private PessoaService pessoaService;
     @Autowired
     private PessoaJuridicaService pessoaJuridicaService;
+    @Autowired
+    private CriarPessoaJuridicaMapper criarPessoaJuridicaMapper;
 
-    @GetMapping("/")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public List<PessoaJuridica> listar(){
+    public List<PessoaJuridicaDTO> listar(){
+        List<PessoaJuridica> pessoas = pessoaJuridicaService.listar();
 
-        return pessoaJuridicaService.listar();
+        return pessoas.stream().map(pessoa -> criarPessoaJuridicaMapper.toResponseDTO(pessoa))
+                .collect(Collectors.toList());
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PessoaJuridica buscarPorId(@PathVariable @Valid Long id){
-        return pessoaJuridicaService.buscarPessoaJuridica(id);
+    public PessoaJuridicaDTO buscarPorId(@PathVariable @Valid Long id){
+        PessoaJuridica pessoaJuridica = pessoaJuridicaService.buscarPessoaJuridica(id);
+        return criarPessoaJuridicaMapper.toResponseDTO(pessoaJuridica);
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public PessoaJuridica criar(@RequestBody @Valid PessoaJuridica pessoaJuridicaService){
-        return pessoaService.criarPessoaJuridica(pessoaJuridicaService);
+    public PessoaJuridicaDTO criar(@RequestBody @Valid PessoaJuridicaRequestDTO request){
+        PessoaJuridica pessoaJuridica= criarPessoaJuridicaMapper.toPessoaJuridicaEntity(request);
+        PessoaJuridica pessoa = pessoaService.criarPessoaJuridica(pessoaJuridica);
+        return criarPessoaJuridicaMapper.toResponseDTO(pessoa);
     }
 
 }
