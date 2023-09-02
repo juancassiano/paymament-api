@@ -2,11 +2,8 @@ package br.com.cassiano.payments.api.controller;
 
 import br.com.cassiano.payments.api.assembler.CriarPessoaJuridicaMapper;
 import br.com.cassiano.payments.api.model.request.PessoaJuridicaRequestDTO;
-import br.com.cassiano.payments.api.model.response.PessoaJuridicaDTO;
-import br.com.cassiano.payments.domain.model.Pessoa;
-import br.com.cassiano.payments.domain.model.PessoaFisica;
+import br.com.cassiano.payments.api.model.response.PessoaJuridicaResponseDTO;
 import br.com.cassiano.payments.domain.model.PessoaJuridica;
-import br.com.cassiano.payments.domain.service.PessoaFisicaService;
 import br.com.cassiano.payments.domain.service.PessoaJuridicaService;
 import br.com.cassiano.payments.domain.service.PessoaService;
 import jakarta.validation.Valid;
@@ -30,7 +27,7 @@ public class PessoaJuridicaController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public List<PessoaJuridicaDTO> listar(){
+    public List<PessoaJuridicaResponseDTO> listar(){
         List<PessoaJuridica> pessoas = pessoaJuridicaService.listar();
 
         return pessoas.stream().map(pessoa -> criarPessoaJuridicaMapper.toResponseDTO(pessoa))
@@ -39,14 +36,14 @@ public class PessoaJuridicaController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PessoaJuridicaDTO buscarPorId(@PathVariable @Valid Long id){
+    public PessoaJuridicaResponseDTO buscarPorId(@PathVariable @Valid Long id){
         PessoaJuridica pessoaJuridica = pessoaJuridicaService.buscarPessoaJuridica(id);
         return criarPessoaJuridicaMapper.toResponseDTO(pessoaJuridica);
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public PessoaJuridicaDTO criar(@RequestBody @Valid PessoaJuridicaRequestDTO request){
+    public PessoaJuridicaResponseDTO criar(@RequestBody @Valid PessoaJuridicaRequestDTO request){
         PessoaJuridica pessoaJuridica= criarPessoaJuridicaMapper.toPessoaJuridicaEntity(request);
         PessoaJuridica pessoa = pessoaService.criarPessoaJuridica(pessoaJuridica);
         return criarPessoaJuridicaMapper.toResponseDTO(pessoa);

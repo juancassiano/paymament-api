@@ -1,12 +1,11 @@
 package br.com.cassiano.payments.api.model.response;
 
-import jakarta.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.br.CNPJ;
+import br.com.cassiano.payments.domain.model.Cartao;
 
 public record PessoaJuridicaResponseDTO(
         Long id,
         String documento,
-        String cartao,
-        String razaoSocial
+        Cartao cartao,
+        String nome
 ) {
 }
