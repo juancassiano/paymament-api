@@ -26,7 +26,7 @@ public class PagamentoController {
 
     @PostMapping("/{documento}")
     @ResponseStatus(HttpStatus.CREATED)
-    public PagamentoResponseDTO criar(@RequestBody @Valid PagamentoRequestDTO request, @PathVariable String documento){
+    public PagamentoResponseDTO criar(@Valid @RequestBody PagamentoRequestDTO request, @PathVariable String documento){
         Pagamento pagamento = criarPagamentoMapper.toPagamentoEntity(request);
         pagamentoservice.criar(pagamento, documento);
         return criarPagamentoMapper.toResponseDTO(pagamento);

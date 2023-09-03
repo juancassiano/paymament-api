@@ -1,4 +1,4 @@
-package br.com.cassiano.payments.infrastructure.configuration;
+package br.com.cassiano.payments.infrastructure.configuration.beanConfigurations;
 
 import br.com.cassiano.payments.api.assembler.CriarPessoaFisicaMapper;
 import br.com.cassiano.payments.api.assembler.CriarPessoaJuridicaMapper;
@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class Config {
+public class MapperConfig {
     @Bean
     CriarPessoaFisicaMapper criarPessoaFisicaMapper() {
         return new CriarPessoaFisicaMapper();
@@ -22,4 +22,6 @@ public class Config {
     CriarPagamentoMapper criarPagamentoMapper() {
         return new CriarPagamentoMapper();
     }
+
+
 }
